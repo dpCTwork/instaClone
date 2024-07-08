@@ -1,8 +1,26 @@
 import { Box, Button, Flex, Image, Input, Text, VStack } from "@chakra-ui/react"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 const AuthForm = () => {
 	const [isLogin, setIsLogin] = useState(true)
+
+	const [inputs, setInputs] = useState({
+		email: "",
+		password: "",
+		confirmPassword: "",
+	})
+
+	const navigate = useNavigate()
+
+	const handleAuth = () => {
+		if (!inputs.email || !inputs.password) {
+			alert("Please fill all the fields")
+			return
+		}
+
+		navigate("/")
+	}
 
 	return (
 		<>
@@ -14,17 +32,36 @@ const AuthForm = () => {
 						cursor={"pointer"}
 						alt="Instaclone"
 					/>
-					<Input placeholder="Email" type="email" fontSize={14} />
+					<Input
+						placeholder="Email"
+						type="email"
+						fontSize={14}
+						value={inputs.email}
+						onChange={(e) =>
+							setInputs({ ...inputs, email: e.target.value })
+						}
+					/>
 					<Input
 						placeholder="Password"
 						type="password"
 						fontSize={14}
+						value={inputs.password}
+						onChange={(e) =>
+							setInputs({ ...inputs, password: e.target.value })
+						}
 					/>
 					{!isLogin ? (
 						<Input
 							placeholder="Confirm Password"
 							type="password"
 							fontSize={14}
+							value={inputs.confirmPassword}
+							onChange={(e) =>
+								setInputs({
+									...inputs,
+									confirmPassword: e.target.value,
+								})
+							}
 						/>
 					) : null}
 
@@ -32,7 +69,8 @@ const AuthForm = () => {
 						w={"full"}
 						colorScheme="blue"
 						size={"sm"}
-						fontSize={14}>
+						fontSize={14}
+						onClick={handleAuth}>
 						{isLogin ? "Log In" : "Sign Up"}
 					</Button>
 
